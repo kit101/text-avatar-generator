@@ -1,50 +1,57 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
   <meta charset="UTF-8">
   <!-- import CSS -->
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/display.css">
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 
 <body>
-  <div id="app" :style="{ 'margin-left': '20%', 'margin-right': '20%' }">
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <el-form label-width="120px" label-suffix=":" label-position="right">
-          <el-form-item label="文字">
-            <el-input v-model="text" type="text" :size="elSize"></el-input>
-          </el-form-item>
-          <el-form-item label="头像大小">
-            <el-input-number v-model="size" :size="elSize" :step="50" :min="0"></el-input-number>
-          </el-form-item>
-          <el-form-item label="文字大小">
-            <el-input-number v-model="fontSize" :size="elSize" :step="0.05" :min="0"></el-input-number>
-          </el-form-item>
-          <el-form-item label="显示文字数">
-            <el-input-number v-model="showLength" :size="elSize" :step="1" :min="1" :max="10"></el-input-number>
-          </el-form-item>
-          <el-form-item label="形状">
-            <el-switch :size="elSize" v-model="shape" active-color="#13ce66" inactive-color="#13ce66" active-text="圆形"
-              inactive-text="方形">
-            </el-switch>
-          </el-form-item>
-          <el-form-item>
-            <!-- <el-button @click="handleGenImg" type="primary" :style="{'width': '100%'}">生 成</el-button> -->
-          </el-form-item>
-        </el-form>
-      </el-col>
-      <el-col :span="12">
-        <el-avatar :size="size" :src="avatarUrl" :shape="shape ? 'circle' : 'square'" alt="无"></el-avatar>
+  <div id="app">
+    <el-row :style="{'margin-top': '10%' }">
+      <el-col :md="{'span':12,'offset':6}" :sm="{'span':14,'offset':2}" :xs="{'span':24,'offset':0}">
+        <el-row :gutter="20">
+          <el-col :md="12" :sm="10" :xs="24" :style="{'text-align': 'center'}" class="hidden-sm-and-up">
+            <el-avatar :size="size" :src="avatarUrl" :shape="shape ? 'circle' : 'square'" alt="无"></el-avatar>
+          </el-col>
+          <el-col :md="12" :sm="14" :xs="24">
+            <el-form label-width="120px" label-suffix=":" label-position="right">
+              <el-form-item label="文字">
+                <el-input v-model="text" type="text" :size="elSize"></el-input>
+              </el-form-item>
+              <el-form-item label="头像大小">
+                <el-input-number v-model="size" :size="elSize" :step="50" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="文字大小">
+                <el-input-number v-model="fontSize" :size="elSize" :step="0.05" :min="0"></el-input-number>
+              </el-form-item>
+              <el-form-item label="显示文字数">
+                <el-input-number v-model="showLength" :size="elSize" :step="1" :min="1" :max="10"></el-input-number>
+              </el-form-item>
+              <el-form-item label="形状">
+                <el-switch :size="elSize" v-model="shape" active-color="#13ce66" inactive-color="#13ce66"
+                  active-text="圆形" inactive-text="方形">
+                </el-switch>
+              </el-form-item>
+              <el-form-item>
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :md="12" :sm="10" :xs="24" :style="{'text-align': 'center'}" class="hidden-xs-only">
+            <el-avatar :size="size" :src="avatarUrl" :shape="shape ? 'circle' : 'square'" alt="无"></el-avatar>
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
   </div>
 </body>
-<!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
 <script>
 
   /**
@@ -106,7 +113,7 @@
     data: function () {
       return {
         elSize: 'small',
-        text: '邱凯',
+        text: '王大锤',
         size: 200,
         fontSize: 0.55,
         showLength: 1,
