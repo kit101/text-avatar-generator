@@ -1,37 +1,140 @@
-## Welcome to GitHub Pages
+<!DOCTYPE html>
+<html>
 
-You can use the [editor on GitHub](https://github.com/kit101/text-avatar-generator/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+<body>
+  <div id="app" :style="{ 'margin-left': '20%', 'margin-right': '20%' }">
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <el-form label-width="120px" label-suffix=":" label-position="right">
+          <el-form-item label="文字">
+            <el-input v-model="text" type="text" :size="elSize"></el-input>
+          </el-form-item>
+          <el-form-item label="头像大小">
+            <el-input-number v-model="size" :size="elSize" :step="50" :min="0"></el-input-number>
+          </el-form-item>
+          <el-form-item label="文字大小">
+            <el-input-number v-model="fontSize" :size="elSize" :step="0.05" :min="0"></el-input-number>
+          </el-form-item>
+          <el-form-item label="显示文字数">
+            <el-input-number v-model="showLength" :size="elSize" :step="1" :min="1" :max="10"></el-input-number>
+          </el-form-item>
+          <el-form-item label="形状">
+            <el-switch :size="elSize" v-model="shape" active-color="#13ce66" inactive-color="#13ce66" active-text="圆形"
+              inactive-text="方形">
+            </el-switch>
+          </el-form-item>
+          <el-form-item>
+            <!-- <el-button @click="handleGenImg" type="primary" :style="{'width': '100%'}">生 成</el-button> -->
+          </el-form-item>
+        </el-form>
+      </el-col>
+      <el-col :span="12">
+        <el-avatar :size="size" :src="avatarUrl" :shape="shape ? 'circle' : 'square'" alt="无"></el-avatar>
+      </el-col>
+    </el-row>
+  </div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
 
-### Markdown
+  /**
+   * 生成ui-avatars链接
+   * 
+   * @see https://ui-avatars.com/
+   * 
+   * @param {String} name 文字
+   * @param {String} size 头像大小
+   * @param {String} fontSize 文字大小
+   * @param {String} length 文字显现最大长度
+   * @param {String} rounded
+   * @param {String} bold
+   * @param {String} background 背景色
+   * @param {String} color 文字颜色
+   * @param {String} uppercase
+   * @param {String} format 格式 png; svg
+   */
+  function getAvatarUrl({ name, size, fontSize, length, rounded, bold, background, color, uppercase, format }) {
+    const params = {
+      name: name ? name : ' ',
+      size: size,
+      'font-size': fontSize,
+      length: length,
+      rounded: rounded,
+      bold: bold,
+      background: background,
+      color: color,
+      uppercase: uppercase,
+      format: format,
+    }
+    var queryString = ''
+    for (var key in params) {
+      if (key && params[key]) {
+        queryString += `${key}=${params[key]}&`
+      }
+    }
+    const url = `https://ui-avatars.com/api/?${queryString}`
+    console.log('params and url ', params, url)
+    return url
+  }
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+  /**
+   * 根据文本生成颜色
+   */
+  function getColorByText(text) {
+    var str = '';
+    for (var i = 0; i < text.length; i++) {
+      str += parseInt(text[i].charCodeAt(0), 10).toString(16);
+    }
+    if (str.length < 3) {
+      return '909399'
+    }
+    return str.slice(1, 4);
+  }
 
-```markdown
-Syntax highlighted code block
+  new Vue({
+    el: '#app',
+    data: function () {
+      return {
+        elSize: 'small',
+        text: '邱凯',
+        size: 200,
+        fontSize: 0.55,
+        showLength: 1,
+        shape: false,
+      }
+    },
+    computed: {
+      /** 背景色 */
+      avatarBackground: function () {
+        return getColorByText(this.text)
+      },
+      /** 头像链接 */
+      avatarUrl: function () {
+        return getAvatarUrl({
+          name: this.text,
+          background: this.avatarBackground,
+          size: this.size,
+          format: 'png',
+          length: this.showLength,
+          fontSize: this.fontSize,
+        })
+      }
+    },
+    methods: {
+    },
+    mounted: function () {
+      window.VueApp = this
+    }
+  })
+</script>
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/kit101/text-avatar-generator/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+</html>
